@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo01
+namespace ConceptArchitect.Utils.Data.Collection
 {
     internal class Table
     {

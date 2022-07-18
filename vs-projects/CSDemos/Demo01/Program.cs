@@ -2,6 +2,13 @@
 {
     static void Main()
     {
-        Console.WriteLine("Hello World");
+        int a = 20;
+
+        var b = 30;
+
+        var table=new ConceptArchitect.Utils.Data.Collection.Table();
+
+       
+        
     }
 }
