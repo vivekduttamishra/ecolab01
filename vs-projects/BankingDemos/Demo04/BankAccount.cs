@@ -26,7 +26,7 @@ namespace ConceptArchitect.Banking
 
         public  double Balance { get; private set; }
 
-        private double interestRate;
+        private static double interestRate;
         public double InterestRate
         {
             get { return interestRate; }
@@ -46,7 +46,7 @@ namespace ConceptArchitect.Banking
             this.Name = name;
             this.Password = password;
             this.Balance = initialAmount;
-            this.interestRate = interestRate;
+          //  interestRate = interestRate;
         }
 
         public bool Deposit(int amount)
