@@ -40,9 +40,13 @@ namespace ConceptArchitect.Banking
         }
 
 
-        public BankAccount(int accountNumber, string name, string password, int initialAmount, double interestRate)
+        public BankAccount( int accountNumber, string name, string password, int initialAmount, double interestRate)
         {
             this.AccountNumber = accountNumber;
+
+            //how do I generate account number
+
+
             this.Name = name;
             this.Password = password;
             this.Balance = initialAmount;

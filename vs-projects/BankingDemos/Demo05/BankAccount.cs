@@ -33,7 +33,8 @@ namespace ConceptArchitect.Banking
 
         private static double interestRate;
 
-        
+        static int lastId = 0;
+
         public static  double InterestRate
         {
             get { return interestRate; }
@@ -54,13 +55,13 @@ namespace ConceptArchitect.Banking
             //set{} //we don't want value to be modified from here.
         }
 
+
         
 
-
-        public BankAccount(int accountNumber, string name, string password, 
+        public BankAccount( string name, string password, 
                                 int initialAmount)
         {
-            this.AccountNumber = accountNumber;
+            this.AccountNumber = ++lastId;
             this.Name = name;
             this.Password = password;
             this.Balance = initialAmount;
@@ -95,6 +96,20 @@ namespace ConceptArchitect.Banking
 
         }
 
+        internal bool TransferTo(BankAccount account2, int amount, string password)
+        {
+            Balance -= amount;
+            account2.Balance += amount;
+            if (amount <= 0)
+                return false;
+            if (!Authenticate(password))
+                return false;
+            if (amount > Balance)
+                return false;
+            else
+                return true;
+        }
+
         public void Show()
         {
             Console.WriteLine($"Account Number:{AccountNumber}" +
@@ -111,6 +126,8 @@ namespace ConceptArchitect.Banking
             get { return password; }
             set { password = Encrypt(value); }
         }
+
+        public static int LastId { get { return lastId; } }
 
         public bool Authenticate(string password)
         {
