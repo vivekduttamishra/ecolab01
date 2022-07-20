@@ -183,7 +183,7 @@ namespace ConceptArchitect.BankingV1.Tests
         }
 
         [Fact(Skip = "NOT YET IMPLEMENTED")]
-        void DepositShouldFailForInvalidAmount()
+        public void DepositShouldFailForInvalidAmount()
         {
 
           
@@ -192,13 +192,12 @@ namespace ConceptArchitect.BankingV1.Tests
             var result = bank.Deposit(account1,-1);
 
 
-            Assert.False(result);
-            Assert.Equal(amount, bank.GetAccountBalance(account1, password));
+            AssertFailedTransaction(result, account1);
             //Assert total number of accounts has not changed
         }
 
         [Fact(Skip = "NOT YET IMPLEMENTED")]
-        void DepositShouldSucceedForHappyPath()
+        public void DepositShouldSucceedForHappyPath()
         {
 
             //ARRANGE
@@ -215,5 +214,136 @@ namespace ConceptArchitect.BankingV1.Tests
             //Assert total number of accounts has not changed
         }
 
+        
+
+        [Fact(Skip = "Not Yet Implemented")]
+        public void WithdrawShouldFailForInvalidAccountNumber()
+        {
+            Assert.False(bank.Withdraw(-1, 1, password));
+        }
+
+        [Fact(Skip = "Not Yet Implemented")]
+        public void WithdrawShouldFailForInvalidPassword()
+        {
+            AssertFailedTransaction(bank.Withdraw(account1, 1, "wrong-password"), account1);
+        }
+
+        [Fact(Skip = "Not Yet Implemented")]
+        public void WithdrawShouldFailForInvalidAmount()
+        {
+            AssertFailedTransaction(bank.Withdraw(account1, -1, password), account1);
+        }
+
+        [Fact(Skip = "Not Yet Implemented")]
+        public void WithdrawShouldFailForInsufficientBalance()
+        {
+            AssertFailedTransaction(bank.Withdraw(account1, amount+1, password), account1);
+        }
+
+        [Fact(Skip = "Not Yet Implemented")]
+        public void WithdrawShouldWorkForHappyCase()
+        {
+            bank.Withdraw(account1, 1, password)
+            AssertUpdatedBalance( account1, amount - 1);
+        }
+
+
+        [Fact(Skip = "Not Yet Implemented")]
+        public void TransferShouldFailForInvalidSourceAccountNumber()
+        {
+            var result = bank.Transfer(-1, 1, password, account2);
+
+            
+            AssertFailedTransaction(result, account2);
+        }
+
+        [Fact(Skip = "Not Yet Implemented")]
+        public void TransferShouldFailForInvalidTargetAccountNumber()
+        {
+            var result = bank.Transfer(account1, 1, password, -account2);
+
+
+            AssertFailedTransaction(result, account1);
+        }
+
+        [Fact(Skip = "Not Yet Implemented")]
+        public void TransferShouldFailForInvalidPassword()
+        {
+            var result = bank.Transfer(account1, 1, "wrong-password", account2);
+            AssertFailedTransaction(result, account1);
+            AssertFailedTransaction(result, account2);
+        }
+
+        [Fact(Skip = "Not Yet Implemented")]
+        public void TransferShouldFailForInvalidAmount()
+        {
+            var result = bank.Transfer(account1, -1, password, account2);
+            AssertFailedTransaction(result, account1);
+            AssertFailedTransaction(result, account2);
+        }
+
+        [Fact(Skip = "Not Yet Implemented")]
+        public void TransferShouldFailForInsufficientBalance()
+        {
+            var result = bank.Transfer(account1,amount+ 1, password, account2);
+            AssertFailedTransaction(result, account1);
+            AssertFailedTransaction(result, account2);
+        }
+
+        [Fact(Skip = "Not Yet Implemented")]
+        public void TransferShouldWorkForHappyCase()
+        {
+            var result = bank.Transfer(account1, 1, password, account2);
+            Assert.True(result);
+            AssertUpdatedBalance(account1, amount - 1);
+            AssertUpdatedBalance(account2, amount + 1);
+        }
+
+        [Fact(Skip ="Not Yet Implemented")]
+        public void CreditInterestShouldCreditInterestToAllAccounts()
+        {
+            bank.CreditInterest();
+
+            var expectedBalance = amount + amount * interestRate / 1200;
+            foreach(var account in bank.GetAccounts())
+                AssertUpdatedBalance(account, expectedBalance);            
+        }
+
+        [Fact(Skip = "Not Yet Implemented")]
+        public void ChangePasswordWorksForHappyPath()
+        {
+            var result=bank.ChangePassword(account1, password, "newPass");
+            Assert.True(result);
+
+            Assert.Equal(amount, bank.GetAccountBalance(account1, "newPass"));
+        }
+        [Fact(Skip = "Not Yet Implemented")]
+        public void ChangePasswordFailsIfCurrentPasswordIsInvalid()
+        {
+            var result = bank.ChangePassword(account1, "wrong-password", "newPass");
+            Assert.False(result);
+
+            Assert.True(double.IsNaN( bank.GetAccountBalance(account1, "newPass")));
+        }
+        [Fact(Skip = "Not Yet Implemented")]
+        public void ChangePasswordFailsIfInvalidAccount()
+        {
+            var result = bank.ChangePassword(-1, password, "newPass");
+            Assert.False(result);
+
+            Assert.True(double.IsNaN(bank.GetAccountBalance(account1, "newPass")));
+        }
+
+
+        private void AssertUpdatedBalance( int account1, double balance)
+        {
+            Assert.Equal(balance, bank.GetAccountBalance(account1, password));
+        }
+
+        private void AssertFailedTransaction(bool result, int account)
+        {
+            Assert.False(result);
+            Assert.Equal(amount, bank.GetAccountBalance(account, password));
+        }
     }
 }
