@@ -17,7 +17,7 @@ namespace Demo03Test
         BankAccount account;
         public BankAccountTests()
         {
-            account= new BankAccount(1, "Vivek", password, amount, rate);
+            account= new BankAccount( "Vivek", password, amount, rate);
         }
 
 
@@ -77,10 +77,10 @@ namespace Demo03Test
 
         }
 
-        [Fact]
+        [Fact(Skip ="This test is not supposed to pass")]
         public void LastInterestRateShouldApplyToAllAccount()
         {
-            var account2 = new BankAccount(2, "some other name", "p@ss", 1000, rate + 1);
+            var account2 = new BankAccount( "some other name", "p@ss", 1000, rate + 1);
 
             Assert.Equal(account2.InterestRate, account.InterestRate);
 
@@ -94,6 +94,20 @@ namespace Demo03Test
             var expectedNewBalance = amount + amount * rate / 1200;
 
             Assert.Equal(expectedNewBalance, account.Balance);
+        }
+
+        [Fact]
+        public void FirstAccountShouldBeAccountNumber1()
+        {
+            Assert.Equal(1, account.AccountNumber);
+        }
+
+        [Fact]
+        public void EachAccountShouldGetANewAccountNumber()
+        {
+            var account2 = new BankAccount("New Name", "New Password", amount);
+
+            Assert.Equal(2, account2.AccountNumber);
         }
     }
 }
