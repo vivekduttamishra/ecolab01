@@ -121,6 +121,16 @@ namespace ConceptArchitect.BankingV1.Tests
             Assert.Equal(amount, result);
         }
 
+        [Fact(Skip = "NOT YET IMPLEMENTED")]
+        public void CloseAccountShouldReduceAccountCountWhenSuccess()
+        {
+
+            //ARRANGE            
+            var result = bank.CloseAccount(account1, password);
+
+
+            Assert.Equal(totalAccounts-1, bank.AccountCount);
+        }
 
 
         [Fact(Skip = "NOT YET IMPLEMENTED")]
@@ -162,11 +172,10 @@ namespace ConceptArchitect.BankingV1.Tests
         [Fact(Skip = "NOT YET IMPLEMENTED")]
         void DepositShouldFailForInvalidAccountNumber()
         {
-
             //ARRANGE
            
             //ACT
-            result = bank.Deposit(-1, 1);
+            var result = bank.Deposit(-1, 1);
 
 
             Assert.False(result);
@@ -177,17 +186,14 @@ namespace ConceptArchitect.BankingV1.Tests
         void DepositShouldFailForInvalidAmount()
         {
 
-            //ARRANGE
-            string password = "p@ss";
-            int amount = 1000;
-            var accountNumber = bank.OpenAccount("Vivek", password, amount);
+          
            
             //ACT
-            result = bank.Deposit(accountNumber,-1);
+            var result = bank.Deposit(account1,-1);
 
 
             Assert.False(result);
-            Assert.Equal(amount, bank.GetAccountBalance(accountNumber, password));
+            Assert.Equal(amount, bank.GetAccountBalance(account1, password));
             //Assert total number of accounts has not changed
         }
 
@@ -201,7 +207,7 @@ namespace ConceptArchitect.BankingV1.Tests
             var accountNumber = bank.OpenAccount("Vivek", password, amount);
 
             //ACT
-            result = bank.Deposit(accountNumber, 1);
+            var result = bank.Deposit(account1, 1);
 
 
             Assert.True(result);
