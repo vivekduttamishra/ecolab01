@@ -27,10 +27,11 @@ namespace ConceptArchitect.Banking
         public  double Balance { get; private set; }
 
         private static double interestRate;
-        public double InterestRate
+        public static  double InterestRate
         {
             get { return interestRate; }
             set {
+
                 var delta = interestRate / 10;
                 var min = interestRate - delta;
                 var max = interestRate + delta;
@@ -39,14 +40,22 @@ namespace ConceptArchitect.Banking
             }
         }
 
+        public double ApplicableRate
+        {
+            get { return interestRate; }
 
-        public BankAccount(int accountNumber, string name, string password, int initialAmount, double interestRate)
+            //set{} //we don't want value to be modified from here.
+        }
+
+
+        public BankAccount(int accountNumber, string name, string password, 
+                                int initialAmount, double interestRate)
         {
             this.AccountNumber = accountNumber;
             this.Name = name;
             this.Password = password;
             this.Balance = initialAmount;
-          //  interestRate = interestRate;
+            BankAccount.interestRate = interestRate;
         }
 
         public bool Deposit(int amount)

@@ -26,7 +26,20 @@ namespace Demo04.Tests
             var newRate = rate + 1;
             var account2 = new BankAccount(2, "Someone else", password, amount, newRate);
 
-            Assert.Equal(newRate, account.InterestRate);
+            Assert.Equal(newRate, account.ApplicableRate);
+        }
+
+        [Fact]
+        public void RateChangeOnOneObjectChangesForAllObjects()
+        {   
+            var account2 = new BankAccount(2, "Someone else", password, amount, rate);
+            var newRate = rate + 1;
+
+            BankAccount.InterestRate = newRate;
+
+            Assert.Equal(newRate, account.ApplicableRate);
+            Assert.Equal(newRate, account2.ApplicableRate);
+
         }
     }
 }
