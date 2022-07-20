@@ -62,7 +62,7 @@ namespace Demo04.Tests
 
 
         [Fact()]
-        public void TransferCanTransferFundsFromOneAccountToAnotherInHappyPath()
+        public void TransferToCanTransferFundsFromOneAccountToAnotherInHappyPath()
         {
             //Act
             bool result = account1.TransferTo(account2, 1, password);
@@ -76,7 +76,7 @@ namespace Demo04.Tests
         }
 
         [Fact()]
-        public void TransferFailsIfSourceAccountDoesntHaveSufficientBalance()
+        public void TransferToFailsIfSourceAccountDoesntHaveSufficientBalance()
         {
             ////Act
             //bool result = BankAccount.Transfer(account1, amount + 1, password, account2);
@@ -94,7 +94,7 @@ namespace Demo04.Tests
 
 
         [Fact()]
-        public void TransferFailsIfSourceAccountPasswordIsInCorrect()
+        public void TransferToFailsIfSourceAccountPasswordIsInCorrect()
         {
             var result = account1.TransferTo(account2, 1, "wrong-password");
 
@@ -105,7 +105,7 @@ namespace Demo04.Tests
 
 
         [Fact()]
-        public void TransferFailsIfInvalidAmountIsEntered()
+        public void TransferToFailsIfInvalidAmountIsEntered()
         {
             var result = account1.TransferTo(account2, -1, password);
 
@@ -113,5 +113,69 @@ namespace Demo04.Tests
             Assert.Equal(amount, account1.Balance);
             Assert.Equal(amount, account2.Balance);
         }
+
+
+
+        [Fact()]
+        public void TransferCanTransferFundsFromOneAccountToAnotherInHappyPath()
+        {
+            //Act
+            bool result = BankAccount.Transfer(account1, 1, password,account2);
+
+            Assert.True(result);
+            Assert.Equal(amount - 1, account1.Balance);
+            Assert.Equal(amount + 1, account2.Balance);
+
+
+
+        }
+
+        [Fact()]
+        public void TransferFailsIfSourceAccountDoesntHaveSufficientBalance()
+        {
+            ////Act
+            //bool result = BankAccount.Transfer(account1, amount + 1, password, account2);
+
+            bool result = BankAccount.Transfer(account1, amount+1, password, account2);
+
+            Assert.False(result);
+
+            ////Assert
+            Assert.False(result);
+            Assert.Equal(amount, account1.Balance);
+            Assert.Equal(amount, account2.Balance);
+
+        }
+
+
+        [Fact()]
+        public void TransferFailsIfSourceAccountPasswordIsInCorrect()
+        {
+            bool result = BankAccount.Transfer(account1, amount , "wrong-password", account2);
+
+
+            Assert.False(result);
+            Assert.Equal(amount, account1.Balance);
+            Assert.Equal(amount, account2.Balance);
+        }
+
+
+        [Fact()]
+        public void TransferFailsIfInvalidAmountIsEntered()
+        {
+            bool result = BankAccount.Transfer(account1, -1, password, account2);
+
+
+
+            Assert.False(result);
+            Assert.Equal(amount, account1.Balance);
+            Assert.Equal(amount, account2.Balance);
+        }
+
+
+
+
+
+
     }
 }
