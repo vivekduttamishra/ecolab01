@@ -10,7 +10,7 @@ namespace ConceptArchitect.Banking
     {
         //private int accountNumber;
 
-        public int AccountNumber { get;  }
+        public int AccountNumber { get; internal set; }
 
        // private string password;
 
@@ -58,7 +58,7 @@ namespace ConceptArchitect.Banking
             
         }
 
-        public bool Withdraw(int amount,string password)
+        public bool Withdraw(double amount,string password)
         {
             if (amount <= 0)
                 return false;
@@ -117,8 +117,11 @@ namespace ConceptArchitect.Banking
             set { password = Encrypt(value); }
         }
 
-        
-
+        public bool IsActive
+        {
+            get
+            { return AccountNumber > 0; }
+        }
         public bool Authenticate(string password)
         {
             return this.password.Equals(Encrypt(password));
@@ -130,10 +133,15 @@ namespace ConceptArchitect.Banking
             Balance += (Balance * interestRate / 1200);
         }
 
-        public void ChangePassword(string oldPassword, string newPassword)
+        public bool ChangePassword(string oldPassword, string newPassword)
         {
             if (Authenticate(oldPassword))
+            {
                 Password = newPassword;
+                return true;
+
+            }
+            return false;
         }
 
       

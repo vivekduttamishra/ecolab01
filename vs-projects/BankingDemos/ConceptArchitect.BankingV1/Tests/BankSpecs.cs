@@ -10,7 +10,7 @@ namespace ConceptArchitect.BankingV1.Tests
 {
     public class BankSpecs
     {
-        dynamic bank;
+        Bank bank;
         int totalAccounts;
         string password = "p@ss";
         double amount = 20000;
@@ -20,6 +20,7 @@ namespace ConceptArchitect.BankingV1.Tests
         {
             bank = new Bank("ICICI", interestRate);
             account1 = bank.OpenAccount("abcd",password, amount);
+            account2 = bank.OpenAccount("fghjk",password, amount);
             totalAccounts = bank.AccountCount;
         }
 
@@ -220,31 +221,43 @@ namespace ConceptArchitect.BankingV1.Tests
 
         
 
-        [Fact(Skip = "Not Yet Implemented")]
+        [Fact]
         public void WithdrawShouldFailForInvalidAccountNumber()
         {
             Assert.False(bank.Withdraw(-1, 1, password));
         }
 
-        [Fact(Skip = "Not Yet Implemented")]
+        [Fact]
         public void WithdrawShouldFailForInvalidPassword()
         {
             AssertFailedTransaction(bank.Withdraw(account1, 1, "wrong-password"), account1);
         }
 
-        [Fact(Skip = "Not Yet Implemented")]
+        [Fact]
         public void WithdrawShouldFailForInvalidAmount()
         {
             AssertFailedTransaction(bank.Withdraw(account1, -1, password), account1);
         }
 
-        [Fact(Skip = "Not Yet Implemented")]
+        [Fact]
         public void WithdrawShouldFailForInsufficientBalance()
         {
             AssertFailedTransaction(bank.Withdraw(account1, amount+1, password), account1);
         }
+        [Fact]
+        public void WithdrawShouldFailForClosedAccount()
+        {
+            //arrange
+            bank.CloseAccount(account1, password);
+            //act
+            var result=bank.Withdraw(account1, 1,password);
 
-        [Fact(Skip = "Not Yet Implemented")]
+
+
+            Assert.False(result);
+        }
+
+        [Fact]
         public void WithdrawShouldWorkForHappyCase()
         {
             bank.Withdraw(account1, 1, password);
@@ -252,7 +265,7 @@ namespace ConceptArchitect.BankingV1.Tests
         }
 
 
-        [Fact(Skip = "Not Yet Implemented")]
+        [Fact]
         public void TransferShouldFailForInvalidSourceAccountNumber()
         {
             var result = bank.Transfer(-1, 1, password, account2);
@@ -261,7 +274,7 @@ namespace ConceptArchitect.BankingV1.Tests
             AssertFailedTransaction(result, account2);
         }
 
-        [Fact(Skip = "Not Yet Implemented")]
+        [Fact]
         public void TransferShouldFailForInvalidTargetAccountNumber()
         {
             var result = bank.Transfer(account1, 1, password, -account2);
@@ -270,7 +283,7 @@ namespace ConceptArchitect.BankingV1.Tests
             AssertFailedTransaction(result, account1);
         }
 
-        [Fact(Skip = "Not Yet Implemented")]
+        [Fact]
         public void TransferShouldFailForInvalidPassword()
         {
             var result = bank.Transfer(account1, 1, "wrong-password", account2);
@@ -278,7 +291,7 @@ namespace ConceptArchitect.BankingV1.Tests
             AssertFailedTransaction(result, account2);
         }
 
-        [Fact(Skip = "Not Yet Implemented")]
+        [Fact]
         public void TransferShouldFailForInvalidAmount()
         {
             var result = bank.Transfer(account1, -1, password, account2);
@@ -286,7 +299,7 @@ namespace ConceptArchitect.BankingV1.Tests
             AssertFailedTransaction(result, account2);
         }
 
-        [Fact(Skip = "Not Yet Implemented")]
+        [Fact]
         public void TransferShouldFailForInsufficientBalance()
         {
             var result = bank.Transfer(account1,amount+ 1, password, account2);
@@ -294,7 +307,7 @@ namespace ConceptArchitect.BankingV1.Tests
             AssertFailedTransaction(result, account2);
         }
 
-        [Fact(Skip = "Not Yet Implemented")]
+        [Fact]
         public void TransferShouldWorkForHappyCase()
         {
             var result = bank.Transfer(account1, 1, password, account2);
@@ -303,17 +316,17 @@ namespace ConceptArchitect.BankingV1.Tests
             AssertUpdatedBalance(account2, amount + 1);
         }
 
-        [Fact(Skip ="Not Yet Implemented")]
+        [Fact]
         public void CreditInterestShouldCreditInterestToAllAccounts()
         {
             bank.CreditInterest();
 
             var expectedBalance = amount + amount * interestRate / 1200;
-            foreach(var account in bank.GetAccounts())
-                AssertUpdatedBalance(account, expectedBalance);            
+           AssertUpdatedBalance(account1, expectedBalance);
+           AssertUpdatedBalance(account2, expectedBalance);
         }
 
-        [Fact(Skip = "Not Yet Implemented")]
+        [Fact]
         public void ChangePasswordWorksForHappyPath()
         {
             var result=bank.ChangePassword(account1, password, "newPass");
@@ -321,7 +334,7 @@ namespace ConceptArchitect.BankingV1.Tests
 
             Assert.Equal(amount, bank.GetAccountBalance(account1, "newPass"));
         }
-        [Fact(Skip = "Not Yet Implemented")]
+        [Fact]
         public void ChangePasswordFailsIfCurrentPasswordIsInvalid()
         {
             var result = bank.ChangePassword(account1, "wrong-password", "newPass");
@@ -329,13 +342,28 @@ namespace ConceptArchitect.BankingV1.Tests
 
             Assert.True(double.IsNaN( bank.GetAccountBalance(account1, "newPass")));
         }
-        [Fact(Skip = "Not Yet Implemented")]
+        [Fact]
         public void ChangePasswordFailsIfInvalidAccount()
         {
             var result = bank.ChangePassword(-1, password, "newPass");
             Assert.False(result);
 
             Assert.True(double.IsNaN(bank.GetAccountBalance(account1, "newPass")));
+        }
+
+        [Fact]
+        public void ClosedAccountNumberCannotBeReused()
+        {
+            // Arrange 
+
+            bank.CloseAccount(account2, password);
+
+            //Act 
+
+            var account3 = bank.OpenAccount("Lisa", "p@ss", 2000);
+
+            //Assert 
+            Assert.NotEqual(account2, account3);
         }
 
 
