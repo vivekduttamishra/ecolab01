@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConceptArchitect.Banking;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace ConceptArchitect.BankingV1.Tests
         int account1, account2;
 
 
-        [Fact(Skip="NOT YET IMPLEMENTED")] 
+        [Fact()] 
         public void BankShouldBeInitilizedWithBankNameAndInterestRate() 
         {
             bank = new Bank("ICICI", 12);
@@ -28,10 +29,10 @@ namespace ConceptArchitect.BankingV1.Tests
 
         }
 
-        [Fact(Skip = "NOT YET IMPLEMENTED")] 
+        [Fact()] 
         public void BankShouldHavePropertyToReturnTotalNumberOfAccountsOriginallySetTo0() 
         {
-            bank = new Bank("ICICI", 12);
+            var bank = new Bank("ICICI", 12);
             Assert.Equal(0, bank.AccountCount);
         }
 
@@ -243,7 +244,7 @@ namespace ConceptArchitect.BankingV1.Tests
         [Fact(Skip = "Not Yet Implemented")]
         public void WithdrawShouldWorkForHappyCase()
         {
-            bank.Withdraw(account1, 1, password)
+            bank.Withdraw(account1, 1, password);
             AssertUpdatedBalance( account1, amount - 1);
         }
 

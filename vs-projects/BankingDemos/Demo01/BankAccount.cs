@@ -29,7 +29,7 @@ namespace ConceptArchitect.Banking
         {
             
             double amount = input.ReadDouble("Amount?");
-            if (amount < 0)
+            if (amount <= 0)
                 Console.WriteLine("Deposit Failed. Invalid Amount");
             else
             {
