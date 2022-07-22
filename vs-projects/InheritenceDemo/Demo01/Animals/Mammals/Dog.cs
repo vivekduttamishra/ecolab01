@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConceptArchitect.AnimalKindom.Animals;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,21 +7,17 @@ using System.Threading.Tasks;
 
 namespace ConceptArchitect.AnimalKindom
 {
-    public class Dog : Animal
+    public class Dog :Mammal, IHunter,IDomestic
     {
         public override string Eat()
         {
             return $"{this} is flesh eater";
         }
 
-        public override string Breed()
+        public string Hunt()
         {
-            return $"{this} is child bearning";
+            return $"{this} is a hunter";
         }
-
-        public string Move()
-        {
-            return $"{this} moves on land";
-        }
+       
     }
 }

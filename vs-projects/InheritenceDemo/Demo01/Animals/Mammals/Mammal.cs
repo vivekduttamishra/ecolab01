@@ -6,18 +6,12 @@ using System.Threading.Tasks;
 
 namespace ConceptArchitect.AnimalKindom
 {
-    public class Leopard : Animal
+    public abstract class Mammal : Animal
     {
-        public override string Eat()
+        public override string Breed()
         {
-            return $"{this} is flesh eater";
+            return $"{this} is child bearing";
         }
-
-        public override  string Breed()
-        {
-            return $"{this} is child bearning";
-        }
-
         public override string Move()
         {
             return $"{this} moves on land";

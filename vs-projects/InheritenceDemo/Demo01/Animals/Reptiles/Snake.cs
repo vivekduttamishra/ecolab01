@@ -6,19 +6,14 @@ using System.Threading.Tasks;
 
 namespace ConceptArchitect.AnimalKindom
 {
-    public class Snake : Animal
+    public class Snake : Reptile
     {
-        public string Eat()
+        public override string Hunt()
         {
-            return $"{this} is flesh eater";
+            return $"{this} is a poisonous hunter";
         }
 
-        public string Breed()
-        {
-            return $"{this} is egg laying";
-        }
-
-        public string Move()
+        public override string Move()
         {
             return $"{this}  crawler";
         }

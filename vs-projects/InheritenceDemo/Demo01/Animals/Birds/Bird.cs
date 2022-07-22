@@ -6,21 +6,20 @@ using System.Threading.Tasks;
 
 namespace ConceptArchitect.AnimalKindom
 {
-    public class Cow : Animal
+    public abstract class Bird:Animal
     {
-        public override string Eat()
-        {
-            return $"{this} is grass eater";
-        }
-
         public override string Breed()
         {
-            return $"{this} is child bearning";
+            return $"{this} is egg laying";
         }
 
         public override string Move()
         {
-            return $"{this} moves on land";
+            return Fly();
+        }
+        public virtual string Fly()
+        {
+            return $"{this} flies";
         }
     }
 }
