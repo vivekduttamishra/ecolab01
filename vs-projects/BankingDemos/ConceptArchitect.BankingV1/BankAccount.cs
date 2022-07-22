@@ -8,7 +8,32 @@ namespace ConceptArchitect.Banking
 
     public class BankAccount
     {
+        public BankAccount(int accountNumber, string name, string password,
+                               double initialAmount)
+        {
+            this.AccountNumber = accountNumber;
+            this.Name = name;
+            this.Password = password;
+            this.Balance = initialAmount;
+            //BankAccount.interestRate = interestRate;
+        }
         //private int accountNumber;
+
+        public bool Withdraw(double amount, string password)
+        {
+            if (amount <= 0)
+                return false;
+            if (amount > Balance)
+                return false;
+            else if (!Authenticate(password))
+                return false;
+            else
+            {
+                Balance -= amount;
+                return true;
+            }
+
+        }
 
         public int AccountNumber { get; internal set; }
 
@@ -31,20 +56,6 @@ namespace ConceptArchitect.Banking
          
 
 
-        
-
-
-        
-
-        public BankAccount( int accountNumber, string name, string password, 
-                                double initialAmount)
-        {
-            this.AccountNumber = accountNumber;
-            this.Name = name;
-            this.Password = password;
-            this.Balance = initialAmount;
-            //BankAccount.interestRate = interestRate;
-        }
 
         public bool Deposit(double amount)
         {
@@ -58,21 +69,7 @@ namespace ConceptArchitect.Banking
             
         }
 
-        public bool Withdraw(double amount,string password)
-        {
-            if (amount <= 0)
-                return false;
-            if (amount > Balance)
-                return false;
-            else if (!Authenticate(password))
-                return false;
-            else
-            {
-                Balance -= amount;
-                return true;
-            }
-
-        }
+       
 
         
 
